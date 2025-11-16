@@ -1,0 +1,11 @@
+logging:
+    level:
+        root: DEBUG
+
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+
+server:
+    port: ${SERVER_PORT:8181}

@@ -1,0 +1,50 @@
+@startuml ddd-domain-model
+
+' Base DDD : classes abstraites / interfaces pour ValueObject, Entity, etc.
+package "Base DDD" {
+    ' Classe mère pour les objets valeur. UniqueId est une sous-classe qui en hérite.
+    class BaseValueObject {
+        +equals(o:Object) : boolean
+        +hashCode() : int
+        +toString() : String
+    }
+
+    class UniqueId {
+        - value : UUID
+        +UniqueId()
+        +getValue() : String
+    }
+
+    BaseValueObject <|-- UniqueId
+
+    ' Classe de base pour les entités, dépendant d’un BaseValueObject comme identifiant.
+    class BaseEntity {
+        - id : BaseValueObject
+        +BaseEntity(id : BaseValueObject)
+        +getId() : BaseValueObject
+        +equals(o:Object) : boolean
+        +hashCode() : int
+        +toString() : String
+    }
+
+    BaseValueObject <|-- BaseEntity
+
+    ' Classe de base pour les agrégats racine
+    class BaseAggregateRoot {
+        - version : long
+        +BaseAggregateRoot(id : BaseValueObject)
+        +getVersion() : long
+        +toString() : String
+    }
+
+    BaseEntity <|-- BaseAggregateRoot
+
+    interface Validate {
+        +validate(object) : void
+    }
+
+    BaseEntity ..|> Validate
+    BaseValueObject ..|> Validate
+}
+
+@enduml

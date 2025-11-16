@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.modulythe.framework</groupId>
+    <artifactId>modulythe-core</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>com-modulythe-framework-pom-parent</name>
+    <description>Modulythe core Framework</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>domain-core</module>
+        <module>application-core</module>
+        <module>infrastructure-core</module>
+        <module>presentation-core</module>
+    </modules>
+
+    <properties>
+        <project.version>0.0.1-SNAPSHOT</project.version>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <!--  Domain Module -->
+        <commons-lang3.version>3.19.0</commons-lang3.version>
+        <hybernate.version>8.0.2.Final</hybernate.version>
+        <jarkarta-el.version>4.0.2</jarkarta-el.version>
+        <jarkarta-el-api.version>6.0.1</jarkarta-el-api.version>
+        <junit-platform.version>6.0.1</junit-platform.version>
+        <!--  Application Module -->
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+        <datafaker.version>2.4.3</datafaker.version>
+        <!--  Exposition Module -->
+        <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
+        <spring-boot-starter-actuator.version>3.5.7</spring-boot-starter-actuator.version>
+        <!--  Infrastructure Module -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <jackson-databind.version>2.20.1</jackson-databind.version>
+        <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
+        <spring-boot-starter.version>3.5.7</spring-boot-starter.version>
+        <springdoc-webmvc.version>2.8.3</springdoc-webmvc.version>
+        <spring-kafka.version>3.3.1</spring-kafka.version>
+        <kafka-avro-serializer.version>7.8.0</kafka-avro-serializer.version>
+        <resilience4j-retry.version>2.3.0</resilience4j-retry.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot-starter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
