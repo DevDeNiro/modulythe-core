@@ -1,31 +1,31 @@
 package com.modulythe.framework.infrastructure.mapper;
 
 import com.modulythe.framework.domain.model.UniqueId;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
-public interface EntityMapperUtils {
+@Component
+public class EntityMapperUtils {
 
-    default UniqueId uuidToUniqueId(UUID uuid) {
+    public static UniqueId uuidToUniqueId(UUID uuid) {
         return uuid != null ? UniqueId.of(uuid.toString()) : null;
     }
 
-    default UUID uniqueIdToUUID(UniqueId uniqueId) {
+    public static UUID uniqueIdToUUID(UniqueId uniqueId) {
         return uniqueId != null ? UUID.fromString(uniqueId.getValue()) : null;
     }
 
-    default String uniqueIdToString(UniqueId uniqueId) {
+    public static String uniqueIdToString(UniqueId uniqueId) {
         return uniqueId != null ? uniqueId.getValue() : null;
     }
 
-    default UniqueId stringToUniqueId(String uid) {
+    public static UniqueId stringToUniqueId(String uid) {
         return uid != null ? UniqueId.of(uid) : null;
     }
 
-    default Optional<String> stringToOptional(String value) {
+    public static Optional<String> stringToOptional(String value) {
         return Optional.ofNullable(value);
     }
 }
