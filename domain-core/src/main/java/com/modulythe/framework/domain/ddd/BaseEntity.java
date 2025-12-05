@@ -67,9 +67,6 @@ public abstract class BaseEntity<T extends BaseEntity<T, ID>, ID extends BaseVal
 
     @Override
     public String toString() {
-        return "BaseEntity{" +
-                "type=" + type +
-                ", id=" + id +
-                '}';
+        return String.format("%s[id=%s]", type.getSimpleName(), id.toString());
     }
 }

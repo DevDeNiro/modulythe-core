@@ -64,13 +64,18 @@ public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID e
         this.domainEvents.clear();
     }
 
+    /**
+     * Returns the version of the aggregate for optimistic locking.
+     *
+     * @return the version number
+     */
     public long getVersion() {
         return version;
     }
 
     @Override
     public String toString() {
-        return "BaseAggregateRoot{" +
+        return super.toString() + ", BaseAggregateRoot{" +
                 "version=" + version +
                 ", domainEvents=" + domainEvents +
                 '}';

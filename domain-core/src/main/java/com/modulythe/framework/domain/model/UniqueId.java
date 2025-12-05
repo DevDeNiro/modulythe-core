@@ -2,8 +2,10 @@ package com.modulythe.framework.domain.model;
 
 import com.modulythe.framework.domain.ddd.BaseValueObject;
 import com.modulythe.framework.domain.exception.BusinessException;
+import com.modulythe.framework.domain.exception.InvalidUniqueIdFormatException;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.lang.annotation.*;
@@ -39,10 +41,7 @@ public final class UniqueId extends BaseValueObject<UniqueId> implements Seriali
      */
     private UniqueId(String value) {
         super(UniqueId.class);
-        if (value == null) {
-            throw new BusinessException("UniqueId value cannot be null", "UNIQUE_ID_NULL");
-        }
-        if (value.isBlank()) {
+        if (StringUtils.isBlank(value)) {
             throw new BusinessException("UniqueId cannot be empty", "UNIQUE_ID_EMPTY");
         }
         if (value.length() > 36) {
@@ -90,7 +89,7 @@ public final class UniqueId extends BaseValueObject<UniqueId> implements Seriali
         try {
             UUID.fromString(value);
         } catch (IllegalArgumentException e) {
-            throw new BusinessException("Invalid UUID format: " + value, "UNIQUE_ID_INVALID");
+            throw new InvalidUniqueIdFormatException("Invalid UUID format: " + value);
         }
     }
 

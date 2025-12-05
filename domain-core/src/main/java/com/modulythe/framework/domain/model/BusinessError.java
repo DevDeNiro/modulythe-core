@@ -1,12 +1,14 @@
 package com.modulythe.framework.domain.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-public class BusinessError implements Serializable {
+public final class BusinessError implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -19,10 +21,10 @@ public class BusinessError implements Serializable {
     }
 
     public BusinessError(String code, String message, Map<String, String> additionalInfo) {
-        if (code == null || code.isBlank()) {
+        if (StringUtils.isBlank(code)) {
             throw new IllegalArgumentException("Error code must not be blank");
         }
-        if (message == null || message.isBlank()) {
+        if (StringUtils.isBlank(message)) {
             throw new IllegalArgumentException("Error message must not be blank");
         }
         this.code = code;
@@ -61,11 +63,8 @@ public class BusinessError implements Serializable {
 
     @Override
     public String toString() {
-        return "BusinessError{" +
-                "code='" + code + '\'' +
-                ", message='" + message + '\'' +
-                ", additionalInfo=" + additionalInfo +
-                '}';
+        return String.format("BusinessError[code='%s', message='%s', additionalInfo=%s]",
+                code, message, additionalInfo);
     }
 
     /* Exemple d'utilisation
