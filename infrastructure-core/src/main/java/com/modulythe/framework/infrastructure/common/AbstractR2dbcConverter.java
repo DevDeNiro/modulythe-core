@@ -57,8 +57,7 @@ public abstract class AbstractR2dbcConverter<A, C> {
             // Spring Data converters are typically invoked with non-null values,
             // but we include a check for safety and consistency.
             if (source == null) {
-                throw new TechnicalException("Unknown value: " + source);
-                // return null;
+                return null;
             }
             return toColumn.apply(source);
         }
@@ -69,12 +68,11 @@ public abstract class AbstractR2dbcConverter<A, C> {
         @Override
         public A convert(C source) {
             if (source == null) {
-                throw new TechnicalException("Unknown value: " + source);
-                // return null;
+                return null;
             }
             A attribute = values.get(source);
             if (attribute == null) {
-                throw new TechnicalException("Unknown value: " + source);
+                throw new IllegalArgumentException("Unknown value: " + source);
             }
             return attribute;
         }

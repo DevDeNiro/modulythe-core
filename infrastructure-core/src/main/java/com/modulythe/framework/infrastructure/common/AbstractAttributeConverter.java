@@ -42,7 +42,7 @@ public abstract class AbstractAttributeConverter<A, C> implements AttributeConve
         }
         final A result = values.get(dbData);
         if (result == null) {
-            throw new TechnicalException("Unknown value: " + dbData);
+            throw new IllegalArgumentException("Unknown value: " + dbData);
         }
         return result;
     }
