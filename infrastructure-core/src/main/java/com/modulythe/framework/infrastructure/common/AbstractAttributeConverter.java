@@ -1,5 +1,6 @@
 package com.modulythe.framework.infrastructure.common;
 
+import com.modulythe.framework.infrastructure.exception.TechnicalException;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * AttributeConverter Stub for JPA
+ * AttributeConverter Stub for Spring Data JPA
  *
  * @param <A> The entity attribute type
  * @param <C> The database column type
@@ -41,9 +42,8 @@ public abstract class AbstractAttributeConverter<A, C> implements AttributeConve
         }
         final A result = values.get(dbData);
         if (result == null) {
-            throw new IllegalArgumentException("Unknown value: " + dbData);
+            throw new TechnicalException("Unknown value: " + dbData);
         }
         return result;
     }
-
 }
