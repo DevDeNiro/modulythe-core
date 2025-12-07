@@ -1,6 +1,5 @@
 package com.modulythe.framework.infrastructure.common;
 
-import com.modulythe.framework.infrastructure.exception.TechnicalException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
