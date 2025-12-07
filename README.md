@@ -46,9 +46,10 @@ The easiest way to run this service during development is to use Docker Compose.
 
 ## Roadmap
 
-- [ ] **Refine some usages of libs like JPA with the use of @ConditionalOnMissing**
-- [ ] : Voir pour rapport de couverture (Jacoco)
 - [ ] : Voir pour une abstraction sur l'usage de broker comme Kafka / Oauth
+- [ ] : Réduire les dépendances transitives pour les projets consommateurs en séparant les artefacts modules
+  *-presentation-webmvc / *-presentation-webflux par stack de donnée : Laisser les starters en compile
+- [ ] : dans les modules core → pas de spring-boot-starter-web ni de springdoc en compile (provided,
 
 ## Contributing
 
