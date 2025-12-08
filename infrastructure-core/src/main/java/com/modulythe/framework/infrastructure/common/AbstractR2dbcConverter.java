@@ -44,11 +44,6 @@ public abstract class AbstractR2dbcConverter<A, C> {
         if (typeArguments != null && typeArguments.length == 2) {
             this.entityType = (Class<A>) typeArguments[0];
             this.columnType = (Class<C>) typeArguments[1];
-            LOGGER.info("Resolved types for {} : {} + : {}",
-                    getClass().getSimpleName(),
-                    entityType.getSimpleName(),
-                    columnType.getSimpleName()
-            );
         } else {
             LOGGER.warn("FAILED to resolve type for {} : ", getClass().getSimpleName());
             throw new IllegalStateException("Could not resolve generic type arguments for " + getClass().getName());
