@@ -4,6 +4,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a filter for numeric values.
+ * <p>
+ * This filter is used to filter data based on an exact numeric match.
+ * </p>
+ */
 public final class FilterNumber extends Filter {
 
     public static FilterNumberBuilder builder() {

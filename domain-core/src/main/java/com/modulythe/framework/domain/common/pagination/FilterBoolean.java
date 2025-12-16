@@ -4,6 +4,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a filter for boolean values.
+ * <p>
+ * This filter allows filtering data based on a true/false condition.
+ * </p>
+ */
 public final class FilterBoolean extends Filter {
 
     public static FilterBooleanBuilder builder() {

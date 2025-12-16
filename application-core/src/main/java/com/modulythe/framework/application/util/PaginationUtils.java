@@ -1,24 +1,18 @@
-package com.modulythe.framework.presentation.util;
+package com.modulythe.framework.application.util;
 
-import com.modulythe.framework.domain.common.pagination.Filter;
-import com.modulythe.framework.domain.common.pagination.FilterString;
-import com.modulythe.framework.domain.common.pagination.PageableModel;
-import com.modulythe.framework.domain.common.pagination.SortModel;
+import com.modulythe.framework.domain.common.pagination.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// note: Does I need to add DTO's if post request ?
-// The domain is already protected btw
-
 /**
  * Utility class for Controllers to simplify the creation of domain objects
  * related to pagination and filtering.
  */
-public class ControllerUtils {
+public class PaginationUtils {
 
-    private ControllerUtils() {
+    private PaginationUtils() {
         // Utility class
     }
 
@@ -75,5 +69,50 @@ public class ControllerUtils {
      */
     public static List<Filter> createFilters(String filterKey, String filterValue) {
         return createFilters(filterKey, filterValue, "ALL");
+    }
+
+    /**
+     * Creates a list of filters based on the provided value and type.
+     * <p>
+     * This method supports creating filters for STRING, BOOLEAN, and NUMBER types.
+     * TODO: create specific builders for complex types (DATE, RANGE, LIST)
+     * </p>
+     *
+     * @param filterKey   The key/name of the filter field.
+     * @param filterValue The value of the filter.
+     * @param type        The expected type of the filter.
+     * @return A list containing the filter if valid, or an empty list.
+     */
+    public static List<Filter> createFilters(String filterKey, Object filterValue, Filter.FilterType type) {
+        List<Filter> filters = new ArrayList<>();
+        if (filterKey == null || filterValue == null) {
+            return filters;
+        }
+
+        try {
+            switch (type) {
+                case STRING -> filters.add(new FilterString(filterKey, String.valueOf(filterValue)));
+                case BOOLEAN -> {
+                    if (filterValue instanceof Boolean b) {
+                        filters.add(new FilterBoolean(filterKey, b));
+                    } else {
+                        filters.add(new FilterBoolean(filterKey, Boolean.parseBoolean(String.valueOf(filterValue))));
+                    }
+                }
+                case NUMBER -> {
+                    if (filterValue instanceof Number n) {
+                        filters.add(new FilterNumber(filterKey, n.doubleValue()));
+                    } else {
+                        filters.add(new FilterNumber(filterKey, Double.parseDouble(String.valueOf(filterValue))));
+                    }
+                }
+                default -> {
+                    // Complex types are not supported yet
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            // Ignore invalid values
+        }
+        return filters;
     }
 }

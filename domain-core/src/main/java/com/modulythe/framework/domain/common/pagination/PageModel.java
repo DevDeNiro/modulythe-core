@@ -7,6 +7,15 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a page of data.
+ * <p>
+ * This class contains the content of a page, as well as metadata about the pagination,
+ * such as the current page number, items per page, and total items.
+ * </p>
+ *
+ * @param <T> the type of the items in the page
+ */
 public final class PageModel<T> implements Validate<PageModel<T>> {
 
     public static <T> PageBuilder<T> builder(List<T> content) {

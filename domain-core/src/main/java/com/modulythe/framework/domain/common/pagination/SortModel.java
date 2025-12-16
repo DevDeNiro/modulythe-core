@@ -6,6 +6,13 @@ import com.modulythe.framework.domain.ddd.BaseValueObject;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents the sorting criteria for a pagination request.
+ * <p>
+ * This class contains a list of orders, where each order specifies a property to sort by
+ * and a direction (ascending or descending).
+ * </p>
+ */
 @SuppressWarnings("java:S2160") // "false positive"
 public final class SortModel extends BaseValueObject<SortModel> {
 

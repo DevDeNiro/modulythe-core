@@ -7,6 +7,12 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A container for complex filter values, including lists and ranges.
+ * <p>
+ * This class can be used to pass multiple types of filter criteria in a single object.
+ * </p>
+ */
 public final class FilterValues implements Validate<FilterValues> {
 
     public static FilterValuesBuilder builder() {

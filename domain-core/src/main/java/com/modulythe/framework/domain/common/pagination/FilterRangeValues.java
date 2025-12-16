@@ -4,6 +4,13 @@ import com.modulythe.framework.domain.ddd.BaseValueObject;
 
 import java.util.List;
 
+/**
+ * Value object representing a range of double values.
+ * <p>
+ * Used to define a min and max value for range-based filtering, potentially
+ * used in other composite filters.
+ * </p>
+ */
 @SuppressWarnings("java:S2160") // "false positive"
 public final class FilterRangeValues extends BaseValueObject<FilterRangeValues> {
     private final double min;

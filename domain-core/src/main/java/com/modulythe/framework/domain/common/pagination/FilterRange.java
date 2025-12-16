@@ -1,5 +1,12 @@
 package com.modulythe.framework.domain.common.pagination;
 
+/**
+ * Represents a filter for a numeric range.
+ * <p>
+ * This filter allows filtering data where a value falls within a specified
+ * minimum and maximum integer range.
+ * </p>
+ */
 public final class FilterRange extends Filter {
 
     public static FilterRangeBuilder builder() {

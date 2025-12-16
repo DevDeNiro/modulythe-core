@@ -4,6 +4,13 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a filter that matches against a list of allowed values.
+ * <p>
+ * This filter is useful for scenarios where a field should match one of several
+ * provided string values (e.g., matching a category against a list of IDs).
+ * </p>
+ */
 public final class FilterList extends Filter {
 
     public static FilterListBuilder builder() {

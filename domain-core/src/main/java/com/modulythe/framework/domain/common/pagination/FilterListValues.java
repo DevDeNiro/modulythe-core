@@ -5,6 +5,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
+/**
+ * Value object wrapping a list of string values for use in {@link FilterList}.
+ * <p>
+ * Encapsulates the list of values to ensure immutability and validation.
+ * </p>
+ */
 @SuppressWarnings("java:S2160") // "false positive"
 public final class FilterListValues extends BaseValueObject<FilterListValues> {
     @NotNull

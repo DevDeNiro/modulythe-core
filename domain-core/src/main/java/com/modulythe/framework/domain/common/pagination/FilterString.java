@@ -4,6 +4,13 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a filter for string values.
+ * <p>
+ * This filter is used to filter data based on exact string matches or substrings,
+ * depending on the interpretation in the infrastructure layer.
+ * </p>
+ */
 public final class FilterString extends Filter {
 
     public static FilterStringBuilder builder() {

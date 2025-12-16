@@ -5,6 +5,13 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
+/**
+ * Represents a request for pagination information.
+ * <p>
+ * This class encapsulates the page number, the number of items per page, and
+ * the sorting criteria. It is typically used to request a specific page of data from a repository.
+ * </p>
+ */
 @SuppressWarnings("java:S2160") // "false positive"
 public final class PageableModel extends BaseValueObject<PageableModel> {
 

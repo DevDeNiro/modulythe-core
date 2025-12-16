@@ -8,6 +8,13 @@ import java.util.Arrays;
 
 import static java.util.Collections.emptySet;
 
+/**
+ * Represents a filter for date values.
+ * <p>
+ * This filter supports filtering by a date range (BETWEEN), or by a date being
+ * after or before a specific date.
+ * </p>
+ */
 public final class FilterDate extends Filter {
 
     public enum FilterDateType {

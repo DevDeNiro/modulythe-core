@@ -6,6 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Abstract base class for all filter types used in pagination.
+ * <p>
+ * This class defines the common properties of a filter, such as its name and type.
+ * It also implements the {@link Validate} interface to ensure the integrity of the filter data.
+ * </p>
+ */
 public abstract class Filter implements Validate<Filter> {
 
     @NotNull
