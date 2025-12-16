@@ -16,7 +16,6 @@ public abstract class Filter implements Validate<Filter> {
     protected Filter(FilterBuilder<?, ?> builderFilter, FilterType type) {
         this.name = Objects.requireNonNull(builderFilter.getName(), "Filter name cannot be null");
         this.type = Objects.requireNonNull(type, "Filter type cannot be null");
-        validate(this);
     }
 
     public String getName() {
