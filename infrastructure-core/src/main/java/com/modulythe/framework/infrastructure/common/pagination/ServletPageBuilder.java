@@ -12,14 +12,14 @@ import java.util.List;
  * It combines a {@link List} of content and a total element count into a {@link PageModel}.
  * </p>
  */
-public final class PageBuilder {
+public final class ServletPageBuilder {
 
-    private PageBuilder() {
+    private ServletPageBuilder() {
         // Utility class
     }
 
     /**
-     * Builds a {@link PageModel} by combining the content and total count.
+     * Builds a {@link PageModel} by combining the content list and total count.
      *
      * @param <T>           the type of the content elements.
      * @param content       the list of content elements for the current page.

@@ -121,7 +121,7 @@ public @interface DDD {
      */
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface DomainRepositoryImpl {
+    public @interface RepositoryAdapter {
         /**
          * A brief description of the implementation details (e.g., "JPA implementation").
          */
@@ -138,19 +138,6 @@ public @interface DDD {
          * A brief description of the service's purpose.
          */
         String description() default "";
-    }
-
-    /**
-     * Marks the concrete implementation of an Infrastructure Service.
-     */
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface InfrastructureServiceImpl {
-        /**
-         * A brief description of the implementation details.
-         */
-        String description() default "";
-
     }
 
     /*
