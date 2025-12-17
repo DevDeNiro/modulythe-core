@@ -97,6 +97,18 @@ public @interface DDD {
     }
 
     /**
+     * Marks a class as a Policy in the domain.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface DomainPolicy {
+
+        String description() default "";
+
+        int version() default 1;
+    }
+
+    /**
      * Marks an interface as a Domain Repository in DDD.
      */
     @Retention(RetentionPolicy.RUNTIME)
