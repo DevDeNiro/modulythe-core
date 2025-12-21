@@ -48,4 +48,12 @@ public abstract class Filter implements Validate<Filter> {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown filter type: " + name));
     }
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

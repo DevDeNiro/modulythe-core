@@ -45,8 +45,9 @@ public class FilterCriteriaBuilder {
         return switch (filter.getType()) {
             case STRING -> {
                 FilterString fs = (FilterString) filter;
-                // Defaulting to case-insensitive generic contains/like
-                yield Criteria.where(property).like("%" + fs.getValue() + "%").ignoreCase(true);
+                String value = fs.getValue();
+                // Let's treat it as LIKE
+                yield Criteria.where(property).like("%" + value + "%").ignoreCase(true);
             }
             case BOOLEAN -> {
                 FilterBoolean fb = (FilterBoolean) filter;

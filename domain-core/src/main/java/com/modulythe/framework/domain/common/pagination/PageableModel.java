@@ -52,4 +52,13 @@ public final class PageableModel extends BaseValueObject<PageableModel> {
     protected List<Object> attributesToIncludeInEqualityCheck() {
         return List.of(pageNumber, itemsPerPage, sort);
     }
+
+    @Override
+    public String toString() {
+        return "PageableModel{" +
+                "pageNumber=" + pageNumber +
+                ", itemsPerPage=" + itemsPerPage +
+                ", sort=" + sort +
+                '}';
+    }
 }
