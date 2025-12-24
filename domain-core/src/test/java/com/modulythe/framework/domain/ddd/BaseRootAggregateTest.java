@@ -41,7 +41,7 @@ class BaseRootAggregateTest {
     @Test
     void testVersioning() {
         TestAggregate aggregate = new TestAggregate(UniqueId.generate());
-        assertEquals(0, aggregate.getVersion());
+        assertEquals(-1, aggregate.getVersion());
     }
 
     @Test

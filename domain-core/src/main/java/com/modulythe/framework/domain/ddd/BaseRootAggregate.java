@@ -18,7 +18,7 @@ import java.util.Objects;
 public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID extends BaseValueObject<ID>> extends BaseEntity<T, ID> implements Serializable {
 
     // Version control for the aggregate
-    protected long version;
+    protected long version = -1;
 
     // Date and time of the last modification of the aggregate
     protected LocalDateTime lastModified;
@@ -71,6 +71,15 @@ public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID e
      */
     public long getVersion() {
         return version;
+    }
+
+    /**
+     * Returns the latest update of the aggregate.
+     *
+     * @return the last date-time update.
+     */
+    public LocalDateTime getLastModified() {
+        return lastModified;
     }
 
     @Override
