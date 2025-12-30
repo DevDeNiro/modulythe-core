@@ -5,6 +5,7 @@ import com.modulythe.framework.domain.event.BaseDomainEvent;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID e
     }
 
     // Maintain a list of domain events for the AR
-    protected transient List<BaseDomainEvent<?>> domainEvents = new ArrayList<>();
+    private transient List<BaseDomainEvent<?>> domainEvents = new ArrayList<>();
 
     /**
      * Adds a domain event to the aggregate's list of events.
@@ -53,7 +54,7 @@ public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID e
      * @return A list of domain events.
      */
     public List<BaseDomainEvent<?>> getDomainEvents() {
-        return this.domainEvents;
+        return Collections.unmodifiableList(this.domainEvents);
     }
 
     /**

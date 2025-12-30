@@ -136,4 +136,14 @@ public final class PageModel<T> implements Validate<PageModel<T>> {
     public int hashCode() {
         return Objects.hash(itemsPerPage, pageNumber, items, totalItems);
     }
+
+    @Override
+    public String toString() {
+        return "PageModel{" +
+                "itemsPerPage=" + itemsPerPage +
+                ", pageNumber=" + pageNumber +
+                ", items=" + items +
+                ", totalItems=" + totalItems +
+                '}';
+    }
 }
