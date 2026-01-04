@@ -3,7 +3,9 @@ package com.modulythe.framework.infrastructure.common.pagination;
 import com.modulythe.framework.domain.common.pagination.*;
 import org.springframework.data.relational.core.query.Criteria;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class to build Spring Data Relational (R2DBC) Criteria from Domain Filters.
@@ -13,6 +15,25 @@ import java.util.List;
  * </p>
  */
 public class FilterCriteriaBuilder {
+
+    private final Map<String, List<String>> multiFieldMappings;
+
+    public FilterCriteriaBuilder() {
+        this.multiFieldMappings = new HashMap<>();
+    }
+
+    /**
+     * Maps a single filter name to multiple entity fields.
+     * Use this for search functionality (e.g. "search" -> ["title", "description"]).
+     *
+     * @param filterName   The name of the filter (e.g. "search")
+     * @param entityFields The list of entity fields to search in (OR logic).
+     * @return this builder for chaining.
+     */
+    public FilterCriteriaBuilder withMultiFieldSearch(String filterName, List<String> entityFields) {
+        this.multiFieldMappings.put(filterName, entityFields);
+        return this;
+    }
 
     /**
      * Builds a single {@link Criteria} object combining all the provided filters with AND logic.
@@ -28,7 +49,7 @@ public class FilterCriteriaBuilder {
         Criteria criteria = Criteria.empty();
         for (Filter filter : filters) {
             Criteria c = toCriteria(filter);
-            if (c != null) {
+            if (c != null && !c.isEmpty()) {
                 if (criteria.isEmpty()) {
                     criteria = c;
                 } else {
@@ -42,11 +63,33 @@ public class FilterCriteriaBuilder {
     private Criteria toCriteria(Filter filter) {
         String property = filter.getName();
 
+        // Handle multi-field search (OR logic)
+        if (multiFieldMappings.containsKey(property)) {
+            List<String> fields = multiFieldMappings.get(property);
+            if (fields == null || fields.isEmpty()) {
+                return null;
+            }
+            if (filter instanceof FilterString fs) {
+                String value = fs.getValue();
+                Criteria orCriteria = null;
+                for (String field : fields) {
+                    Criteria c = Criteria.where(field).like("%" + value + "%").ignoreCase(true);
+                    if (orCriteria == null) {
+                        orCriteria = c;
+                    } else {
+                        orCriteria = orCriteria.or(c);
+                    }
+                }
+                return orCriteria;
+            }
+            // NOTE: Add support for other types ?
+        }
+
         return switch (filter.getType()) {
             case STRING -> {
                 FilterString fs = (FilterString) filter;
                 String value = fs.getValue();
-                // Let's treat it as LIKE
+                // Treat it as LIKE
                 yield Criteria.where(property).like("%" + value + "%").ignoreCase(true);
             }
             case BOOLEAN -> {
@@ -73,7 +116,7 @@ public class FilterCriteriaBuilder {
                 FilterList fl = (FilterList) filter;
                 yield Criteria.where(property).in(fl.getValues().getValues());
             }
-            default -> null; // Or throw exception
+            default -> throw new UnsupportedOperationException("Unsupported filter type: " + filter.getType());
         };
     }
 }
