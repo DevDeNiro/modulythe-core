@@ -28,6 +28,18 @@ public class ServletGlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MalFormedQueryException.class)
+    public ResponseEntity<ErrorResponse> handleMalFormedQueryException(@NonNull MalFormedQueryException ex, @NonNull WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "MalFormed Query",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(@NonNull IllegalArgumentException ex, @NonNull WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(

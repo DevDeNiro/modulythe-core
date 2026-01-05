@@ -26,6 +26,18 @@ public class ReactiveGlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MalFormedQueryException.class)
+    public ResponseEntity<ErrorResponse> handleMalFormedQueryException(@NonNull MalFormedQueryException ex, @NonNull ServerWebExchange exchange) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "MalFormed Query",
+                ex.getMessage(),
+                exchange.getRequest().getPath().value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(@NonNull IllegalArgumentException ex, @NonNull ServerWebExchange exchange) {
         ErrorResponse errorResponse = new ErrorResponse(
