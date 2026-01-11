@@ -3,6 +3,7 @@ package com.modulythe.framework.infrastructure.security;
 import com.modulythe.framework.application.security.AuthenticatedUser;
 import com.modulythe.framework.application.security.SecurityProperties;
 import com.modulythe.framework.application.security.UserMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,7 @@ public class ReactiveSecurityConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean(SecurityWebFilterChain.class)
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
