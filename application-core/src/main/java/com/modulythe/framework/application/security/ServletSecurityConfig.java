@@ -16,6 +16,14 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security configuration for Servlet (MVC) applications.
+ * <p>
+ * This configuration enables Web Security and method security.
+ * It configures the {@link SecurityFilterChain} to handle OAuth2 Resource Server
+ * authentication, supporting both JWT and Opaque Token introspection.
+ * </p>
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

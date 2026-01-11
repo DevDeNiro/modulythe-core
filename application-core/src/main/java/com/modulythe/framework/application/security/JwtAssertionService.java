@@ -15,11 +15,25 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.util.Date;
 
+/**
+ * Service responsible for creating and signing JWT assertions.
+ * <p>
+ * This service is typically used in the OAuth2 Client Credentials flow, where a self-signed
+ * JWT is exchanged for an access token. It uses the Nimbus JOSE library for signing.
+ * </p>
+ */
 @Service
 public class JwtAssertionService {
 
     private static final String SCOPE_CLAIM = "scope";
 
+    /**
+     * Signs a JWT with the provided configuration.
+     *
+     * @param config The configuration containing client details and keystore information.
+     * @return A serialized, signed JWT string (JWS).
+     * @throws IllegalStateException if the JWT cannot be created or signed (e.g., keystore errors).
+     */
     public String signJwt(JwtAssertionConfig config) {
         try {
             // Load the private key
@@ -52,6 +66,18 @@ public class JwtAssertionService {
         }
     }
 
+    /**
+     * Configuration record for generating a JWT assertion.
+     *
+     * @param clientId              The client identifier (Issuer and Subject of the JWT).
+     * @param audienceUrl           The audience URL (Audience of the JWT).
+     * @param keyAlias              The alias of the private key in the keystore.
+     * @param trustStorePath        The file path to the keystore.
+     * @param keyStorePassword      The password for the keystore and private key.
+     * @param scope                 The scope to include in the JWT.
+     * @param expireTimeInSeconds   How long the token is valid (seconds).
+     * @param issuedAtOffsetSeconds Time offset for 'issued at' to handle clock skew (seconds).
+     */
     public record JwtAssertionConfig(
             String clientId,
             String audienceUrl,

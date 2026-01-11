@@ -1,6 +1,5 @@
 package com.modulythe.framework.application.security;
 
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -8,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Mapper component to convert raw attributes (from JWT or Opaque token) into an {@link AuthenticatedUser}.
+ * <p>
+ * Handles extraction of claims like sub, given_name, family_name, email, and roles.
+ * </p>
+ */
 @Component
 public class UserMapper {
 
@@ -17,8 +22,15 @@ public class UserMapper {
     private static final String CLAIM_EMAIL = "email";
     private static final String CLAIM_ROLES = "roles";
 
-    @NonNull
-    public AuthenticatedUser toAuthenticatedUser(@NonNull Map<String, Object> attributes) {
+    /**
+     * Converts a map of token attributes to an AuthenticatedUser domain object.
+     *
+     * @param attributes The map of claims/attributes from the security token.
+     * @return A populated {@link AuthenticatedUser}.
+     * @throws NullPointerException if attributes map is null.
+     */
+    public AuthenticatedUser toAuthenticatedUser(Map<String, Object> attributes) {
+        Objects.requireNonNull(attributes, "attributes cannot be null");
         return new AuthenticatedUser(
                 getClaimOrDefault(attributes, CLAIM_SUB),
                 getClaimOrDefault(attributes, CLAIM_GIVEN_NAME),

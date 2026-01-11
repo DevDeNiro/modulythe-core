@@ -1,10 +1,19 @@
 package com.modulythe.framework.application.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 
+/**
+ * Represents the response from an OAuth2 token endpoint.
+ * <p>
+ * Contains the access token and related metadata (type, expiration, scope).
+ * It also tracks the reception time to calculate validity.
+ * </p>
+ */
 public class TokenResponse implements Serializable {
 
     @Serial
@@ -22,7 +31,15 @@ public class TokenResponse implements Serializable {
     @JsonProperty("scope")
     private String scope;
 
+    /**
+     * Timestamp when this response was instantiated/received.
+     * Used to calculate local expiration.
+     */
+    @JsonIgnore
+    private Instant receivedAt;
+
     public TokenResponse() {
+        this.receivedAt = Instant.now();
     }
 
     public TokenResponse(String accessToken, String tokenType, Integer expiresIn, String scope) {
@@ -30,6 +47,7 @@ public class TokenResponse implements Serializable {
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
         this.scope = scope;
+        this.receivedAt = Instant.now();
     }
 
     public String getAccessToken() {
@@ -62,5 +80,13 @@ public class TokenResponse implements Serializable {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public Instant getReceivedAt() {
+        return receivedAt;
+    }
+
+    public void setReceivedAt(Instant receivedAt) {
+        this.receivedAt = receivedAt;
     }
 }

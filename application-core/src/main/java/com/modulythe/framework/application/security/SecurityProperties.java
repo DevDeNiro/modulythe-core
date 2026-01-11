@@ -3,13 +3,32 @@ package com.modulythe.framework.application.security;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * General security configuration properties.
+ * <p>
+ * Maps properties prefixed with "modulythe.security".
+ * Controls the authentication mode (JWT vs Opaque) and introspection details for Resource Servers.
+ * </p>
+ */
 @Configuration
 @ConfigurationProperties(prefix = "modulythe.security")
 public class SecurityProperties {
 
+    /**
+     * Authentication mode: "jwt" (default) or "opaque".
+     */
     private String mode = "jwt"; // jwt or opaque
+    /**
+     * URI for opaque token introspection (only used if mode is "opaque").
+     */
     private String introspectionUri;
+    /**
+     * Client ID for introspection (only used if mode is "opaque").
+     */
     private String clientId;
+    /**
+     * Client Secret for introspection (only used if mode is "opaque").
+     */
     private String clientSecret;
 
     public String getMode() {

@@ -15,8 +15,14 @@ import org.springframework.security.oauth2.server.resource.introspection.Reactiv
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.stream.Collectors;
-
+/**
+ * Security configuration for Reactive (WebFlux) applications.
+ * <p>
+ * This configuration enables WebFlux security and reactive method security.
+ * It configures the {@link SecurityWebFilterChain} to handle OAuth2 Resource Server
+ * authentication, supporting both JWT and Opaque Token introspection.
+ * </p>
+ */
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
