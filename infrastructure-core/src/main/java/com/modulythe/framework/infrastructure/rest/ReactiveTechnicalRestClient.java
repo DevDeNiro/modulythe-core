@@ -7,12 +7,12 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 @Service
 @RefreshScope
@@ -30,7 +30,10 @@ public class ReactiveTechnicalRestClient {
         this.webClient = webClientBuilder.build();
     }
 
-    public <T> Mono<ResponseEntity<T>> postData(@NonNull String url, @Nullable String token, @Nullable Object bodyRequest, @NonNull Class<T> responseType) {
+    public <T> Mono<ResponseEntity<T>> postData(String url, String token, Object bodyRequest, Class<T> responseType) {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         return webClient.post()
                 .uri(url)
                 .headers(headers -> headers.addAll(createHttpHeaders(url, token)))
@@ -40,7 +43,10 @@ public class ReactiveTechnicalRestClient {
                 .doOnError(WebClientResponseException.class, e -> LOGGER.error(ERROR_CALLING_REST, url, e));
     }
 
-    public <T> Mono<ResponseEntity<T>> getData(@NonNull String url, @Nullable String token, @NonNull Class<T> responseType) {
+    public <T> Mono<ResponseEntity<T>> getData(String url, String token, Class<T> responseType) {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         return webClient.get()
                 .uri(url)
                 .headers(headers -> headers.addAll(createHttpHeaders(url, token)))
@@ -49,7 +55,10 @@ public class ReactiveTechnicalRestClient {
                 .doOnError(WebClientResponseException.class, e -> LOGGER.error(ERROR_CALLING_REST, url, e));
     }
 
-    public <T> Mono<ResponseEntity<T>> putData(@NonNull String url, @Nullable String token, @Nullable Object bodyRequest, @NonNull Class<T> responseType) {
+    public <T> Mono<ResponseEntity<T>> putData(String url, String token, Object bodyRequest, Class<T> responseType) {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         return webClient.put()
                 .uri(url)
                 .headers(headers -> headers.addAll(createHttpHeaders(url, token)))
@@ -59,7 +68,10 @@ public class ReactiveTechnicalRestClient {
                 .doOnError(WebClientResponseException.class, e -> LOGGER.error(ERROR_CALLING_REST, url, e));
     }
 
-    public <T> Mono<ResponseEntity<T>> deleteData(@NonNull String url, @Nullable String token, @NonNull Class<T> responseType) {
+    public <T> Mono<ResponseEntity<T>> deleteData(String url, String token, Class<T> responseType) {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         return webClient.method(HttpMethod.DELETE)
                 .uri(url)
                 .headers(headers -> headers.addAll(createHttpHeaders(url, token)))

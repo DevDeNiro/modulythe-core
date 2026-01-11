@@ -1,6 +1,5 @@
 package com.modulythe.framework.application.security;
 
-import com.modulythe.framework.application.AuthenticatedUser;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

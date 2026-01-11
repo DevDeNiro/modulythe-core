@@ -1,6 +1,5 @@
 package com.modulythe.framework.application.security;
 
-import com.modulythe.framework.application.AuthenticatedUser;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,7 +59,7 @@ public class ReactiveSecurityConfig {
             AuthenticatedUser user = userMapper.toAuthenticatedUser(authenticatedPrincipal.getAttributes());
             var authorities = user.roles().stream()
                     .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+                    .toList();
             return Mono.just(new UsernamePasswordAuthenticationToken(user, authenticatedPrincipal, authorities));
         };
     }
@@ -70,7 +69,7 @@ public class ReactiveSecurityConfig {
             AuthenticatedUser user = userMapper.toAuthenticatedUser(jwt.getClaims());
             var authorities = user.roles().stream()
                     .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+                    .toList();
             return Mono.just(new UsernamePasswordAuthenticationToken(user, jwt, authorities));
         };
     }

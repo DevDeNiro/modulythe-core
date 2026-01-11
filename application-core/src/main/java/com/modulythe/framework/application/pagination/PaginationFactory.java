@@ -1,4 +1,4 @@
-package com.modulythe.framework.application.util;
+package com.modulythe.framework.application.pagination;
 
 import com.modulythe.framework.domain.common.pagination.*;
 
@@ -8,12 +8,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Utility class for Controllers to simplify the creation of domain objects
+ * Factory class for Controllers to simplify the creation of domain objects
  * related to pagination and filtering.
  */
-public class PaginationUtils {
+public class PaginationFactory {
 
-    private PaginationUtils() {
+    private PaginationFactory() {
         // Utility class
     }
 

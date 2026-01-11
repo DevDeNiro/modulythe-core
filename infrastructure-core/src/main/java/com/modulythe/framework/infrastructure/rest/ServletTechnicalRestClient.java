@@ -8,11 +8,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Objects;
 
 @Service
 @RefreshScope
@@ -30,11 +30,11 @@ public class ServletTechnicalRestClient {
         this.restTemplate = restTemplate;
     }
 
-    public <T> ResponseEntity<T> postData(@NonNull String url, @Nullable String token, @Nullable Object bodyRequest, @NonNull Class<T> responseType) throws HttpClientErrorException {
-        HttpHeaders headers = createHttpHeaders(url, token);
+    public <T> ResponseEntity<T> postData(String url, String token, Object bodyRequest, Class<T> responseType) throws HttpClientErrorException {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
 
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
+        HttpHeaders headers = createHttpHeaders(url, token);
 
         HttpEntity<Object> entity = new HttpEntity<>(bodyRequest, headers);
 
@@ -46,12 +46,11 @@ public class ServletTechnicalRestClient {
         }
     }
 
-    public <T> ResponseEntity<T> getData(@NonNull String url, @Nullable String token, @NonNull Class<T> responseType) throws HttpClientErrorException {
+    public <T> ResponseEntity<T> getData(String url, String token, Class<T> responseType) throws HttpClientErrorException {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
 
         HttpHeaders headers = createHttpHeaders(url, token);
-
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
 
         HttpEntity<Object> entity = new HttpEntity<>(headers);
 
@@ -63,24 +62,28 @@ public class ServletTechnicalRestClient {
         }
     }
 
-    public <T> ResponseEntity<T> putData(@NonNull String url, @Nullable String token, @Nullable Object bodyRequest, @NonNull Class<T> responseType) throws HttpClientErrorException {
+    public <T> ResponseEntity<T> putData(String url, String token, Object bodyRequest, Class<T> responseType) throws HttpClientErrorException {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         HttpHeaders headers = createHttpHeaders(url, token);
         HttpEntity<Object> entity = new HttpEntity<>(bodyRequest, headers);
         return restTemplate.exchange(url, HttpMethod.PUT, entity, responseType);
     }
 
-    public <T> ResponseEntity<T> deleteData(@NonNull String url, @Nullable String token, @NonNull Class<T> responseType) throws HttpClientErrorException {
+    public <T> ResponseEntity<T> deleteData(String url, String token, Class<T> responseType) throws HttpClientErrorException {
+        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(responseType, "Response type cannot be null");
+
         HttpHeaders headers = createHttpHeaders(url, token);
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(url, HttpMethod.DELETE, entity, responseType); // Ou String.class
+        return restTemplate.exchange(url, HttpMethod.DELETE, entity, responseType);
     }
 
     private HttpHeaders createHttpHeaders(String url, String token) {
         HttpHeaders headers = new HttpHeaders();
         if (token == null || token.isEmpty()) {
             LOGGER.error(EMPTY_TOKEN, url);
-//            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Token d'authentification vide ou null");
-
         } else {
             headers.setBearerAuth(token);
         }

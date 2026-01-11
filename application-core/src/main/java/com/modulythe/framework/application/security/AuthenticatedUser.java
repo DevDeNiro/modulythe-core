@@ -1,4 +1,4 @@
-package com.modulythe.framework.application;
+package com.modulythe.framework.application.security;
 
 import org.springframework.lang.NonNull;
 
