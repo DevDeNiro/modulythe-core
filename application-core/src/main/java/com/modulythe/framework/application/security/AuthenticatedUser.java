@@ -24,9 +24,6 @@ public record AuthenticatedUser(
         String email,
         List<String> roles
 ) implements Serializable {
-    /**
-     * Compact constructor to validate that no fields are null.
-     */
     public AuthenticatedUser {
         Objects.requireNonNull(uuid, "uuid cannot be null");
         Objects.requireNonNull(firstName, "firstName cannot be null");
