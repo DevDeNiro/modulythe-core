@@ -20,8 +20,9 @@
     <modules>
         <module>domain-core</module>
         <module>application-core</module>
-        <module>infrastructure-core</module>
-        <module>presentation-core</module>
+        <module>infrastructure-common</module>
+        <module>infrastructure-servlet</module>
+        <module>infrastructure-reactive</module>
     </modules>
 
     <properties>
