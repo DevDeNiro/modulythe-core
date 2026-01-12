@@ -15,8 +15,8 @@ It aims to provide a solid foundation for building modular, domain-driven applic
 
 ## Key Features
 
-- Provides multiple abstractions for the domain layer, inspired by Domain-Driven Design (
-  DDD) [ddd.img](documentation/schemas/domain-model.puml) principles.
+- Provides multiple abstractions for the domain layer, inspired by Domain-Driven Design
+  (DDD) [ddd.img](documentation/schemas/domain-model.puml) principles.
 - Offers utility objects for common tasks like filtering and pagination.
 - Includes default configurations for testing environments.
 
@@ -43,13 +43,6 @@ The main technologies and libraries used are:
 
 The easiest way to run this service during development is to use Docker Compose.
 *(Further instructions to be added).*
-
-## Roadmap
-
-- [ ] : Voir pour une abstraction sur l'usage de broker comme Kafka / Oauth
-- [ ] : Réduire les dépendances transitives pour les projets consommateurs en séparant les artefacts modules
-  *-presentation-webmvc / *-presentation-webflux par stack de donnée : Laisser les starters en compile
-- [ ] : dans les modules core → pas de spring-boot-starter-web ni de springdoc en compile (provided,
 
 ## Contributing
 

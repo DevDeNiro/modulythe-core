@@ -32,7 +32,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <spring-cloud.version>2025.1.0</spring-cloud.version>
         <!--  Domain Module -->
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <hybernate.version>8.0.2.Final</hybernate.version>
@@ -44,16 +44,13 @@
         <datafaker.version>2.4.3</datafaker.version>
         <!--  Exposition Module -->
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
-        <spring-boot-starter-actuator.version>4.0.0</spring-boot-starter-actuator.version>
+        <spring-boot-starter-actuator.version>4.0.1</spring-boot-starter-actuator.version>
         <!--  Infrastructure Module -->
+        <spring-boot-starter.version>4.0.1</spring-boot-starter.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <jackson-databind.version>2.20.1</jackson-databind.version>
         <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
-        <spring-boot-starter.version>4.0.0</spring-boot-starter.version>
-        <springdoc-webmvc.version>2.8.3</springdoc-webmvc.version>
-        <spring-kafka.version>3.3.1</spring-kafka.version>
-        <kafka-avro-serializer.version>7.8.0</kafka-avro-serializer.version>
-        <resilience4j-retry.version>2.3.0</resilience4j-retry.version>
+        <springdoc-webmvc.version>3.0.1</springdoc-webmvc.version>
     </properties>
 
     <dependencies>
