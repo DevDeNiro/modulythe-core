@@ -45,6 +45,12 @@
             <artifactId>spring-cloud-starter-config</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- Jackson Kotlin Support -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-kotlin</artifactId>
+        </dependency>
         
         <!-- Security -->
         <dependency>
