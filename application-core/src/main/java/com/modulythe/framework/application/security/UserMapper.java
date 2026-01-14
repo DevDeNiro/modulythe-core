@@ -21,6 +21,7 @@ public class UserMapper {
     private static final String CLAIM_FAMILY_NAME = "family_name";
     private static final String CLAIM_EMAIL = "email";
     private static final String CLAIM_ROLES = "roles";
+    private static final String CLAIM_REALM_ACCESS = "realm_access";
 
     /**
      * Converts a map of token attributes to an AuthenticatedUser domain object.
@@ -46,6 +47,7 @@ public class UserMapper {
     }
 
     private List<String> extractRoles(Map<String, Object> attributes) {
+        // 1. Try "roles" (Standard / Custom)
         Object roles = attributes.get(CLAIM_ROLES);
         if (roles instanceof List<?> list) {
             return list.stream()
@@ -53,6 +55,19 @@ public class UserMapper {
                     .map(Object::toString)
                     .toList();
         }
+
+        // 2. Try "realm_access" -> "roles" (Keycloak Standard)
+        Object realmAccess = attributes.get(CLAIM_REALM_ACCESS);
+        if (realmAccess instanceof Map<?, ?> map) {
+            Object realmRoles = map.get(CLAIM_ROLES);
+            if (realmRoles instanceof List<?> list) {
+                return list.stream()
+                        .filter(Objects::nonNull)
+                        .map(Object::toString)
+                        .toList();
+            }
+        }
+
         return Collections.emptyList();
     }
 }
