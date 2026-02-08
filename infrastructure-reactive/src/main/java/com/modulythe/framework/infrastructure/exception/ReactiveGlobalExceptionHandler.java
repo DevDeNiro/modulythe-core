@@ -1,12 +1,16 @@
 package com.modulythe.framework.infrastructure.exception;
 
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ServerWebExchange;
@@ -18,7 +22,7 @@ import java.util.UUID;
  * Global exception handler for Reactive (WebFlux) applications.
  * <p>
  * In production mode, sensitive error details are hidden from clients and logged server-side.
- * A unique error reference ID is provided to clients for support purposes.
+ * A unique error reference ID (TraceId when available, otherwise UUID) is provided to clients for support purposes.
  * </p>
  */
 @RestControllerAdvice
@@ -28,8 +32,19 @@ public class ReactiveGlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveGlobalExceptionHandler.class);
     private static final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred. Please contact support with reference ID: ";
 
+    private final Tracer tracer;
+
     @Value("${modulythe.exception.expose-details:false}")
     private boolean exposeDetails;
+
+    public ReactiveGlobalExceptionHandler(@Autowired(required = false) @Nullable Tracer tracer) {
+        this.tracer = tracer;
+        if (tracer == null) {
+            LOGGER.info("Micrometer Tracer not available - using UUID for error reference IDs");
+        } else {
+            LOGGER.info("Micrometer Tracer available - using TraceId for error reference IDs");
+        }
+    }
 
     @ExceptionHandler(TechnicalException.class)
     public ResponseEntity<ErrorResponse> handleTechnicalException(@NonNull TechnicalException ex, @NonNull ServerWebExchange exchange) {
@@ -126,8 +141,15 @@ public class ReactiveGlobalExceptionHandler {
 
     /**
      * Generates a unique error reference ID for tracking purposes.
+     * Uses TraceId from Micrometer Tracing if available, otherwise falls back to UUID.
      */
     private String generateErrorId() {
+        if (tracer != null) {
+            Span currentSpan = tracer.currentSpan();
+            if (currentSpan != null) {
+                return currentSpan.context().traceId();
+            }
+        }
         return UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 }
