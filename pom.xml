@@ -72,6 +72,9 @@
         <jackson-databind.version>2.20.1</jackson-databind.version>
         <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
         <springdoc-webmvc.version>3.0.1</springdoc-webmvc.version>
+        <!-- Logging: structured (JSON) encoder for prod/aggregator profiles.
+             Spring Boot's BOM does NOT manage this artifact, so we pin a version. -->
+        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
         <!-- Maven Central Publishing -->
         <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>

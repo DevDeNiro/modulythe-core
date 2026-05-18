@@ -50,6 +50,24 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-databind.version}</version>
         </dependency>
+
+        <!--
+          Logstash Logback encoder.
+          Powers MODULYTHE_STDOUT_JSON in `src/main/resources/modulythe/logging/logback-defaults.xml`.
+          - `runtime` scope: only needed when the JVM loads Logback at startup,
+            not at compile time. Consumers that opt into the JSON appender will
+            inherit this transitively (Maven `runtime` deps are transitive when
+            the consumer's dep scope is `compile`).
+          - Marked `optional` so apps that don't include `logback-defaults.xml`
+            don't pull this JAR for nothing.
+        -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>

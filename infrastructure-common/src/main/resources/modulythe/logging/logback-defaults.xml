@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================================
+  Modulythe - Shared Logback defaults
+  ============================================================================
+
+  Drop-in include for any Modulythe-based Spring Boot application. Provides:
+
+    - MODULYTHE_LOG_PATTERN    : the canonical text pattern with [traceId=... spanId=...]
+                                 sourced from the MDC (populated by Micrometer Tracing
+                                 + the bridge to OpenTelemetry, or any other tracer
+                                 that writes to the standard SLF4J MDC keys).
+
+    - MODULYTHE_STDOUT_TEXT    : human-readable console appender (uses the pattern above).
+                                 Use this in local/dev profiles.
+
+    - MODULYTHE_STDOUT_JSON    : structured one-line JSON via Logstash encoder.
+                                 Use this in prod/alpha profiles so log aggregators
+                                 (Loki + Promtail, CloudWatch, ELK, etc.) can
+                                 query traceId/spanId without regex parsing:
+                                 `{namespace="..."} | json | traceId="abc123"`.
+
+  Usage (in your app's `logback-spring.xml`):
+
+      <configuration>
+          <include resource="modulythe/logging/logback-defaults.xml"/>
+          <springProperty name="MODULYTHE_LOGGING_APPENDER"
+                          source="modulythe.logging.appender"
+                          defaultValue="MODULYTHE_STDOUT_TEXT"/>
+          <root level="INFO">
+              <appender-ref ref="${MODULYTHE_LOGGING_APPENDER}"/>
+          </root>
+      </configuration>
+
+  Why a springProperty rather than a springProfile to swap appenders:
+  Spring Boot initializes Logback twice. The very first pass happens BEFORE
+  the Environment is built, so springProfile blocks are silently skipped.
+  With a springProperty + defaultValue, the same value is used both at
+  early-bootstrap time AND once the Environment is ready, so the root logger
+  always has exactly one appender attached and you never see the
+  "No appenders present in context [default]" warning.
+
+  Switch encoder per environment by overriding modulythe.logging.appender
+  in the matching application-<profile>.yaml:
+
+      modulythe:
+          logging:
+              appender: MODULYTHE_STDOUT_JSON   # or MODULYTHE_STDOUT_TEXT
+
+  Override `MODULYTHE_LOG_PATTERN` via env var to tweak the text pattern
+  without rebuilding the JAR (handy in CI logs).
+  ============================================================================
+-->
+<included>
+
+    <!-- Text pattern - identical to what Coterie has been emitting in prod for months. -->
+    <property name="MODULYTHE_LOG_PATTERN"
+              value="${MODULYTHE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [traceId=%X{traceId:-} spanId=%X{spanId:-}] %-5level %logger{36} - %msg%n}"/>
+
+    <!-- Bound from `spring.application.name`. Defaults to "modulythe-app" if Spring's
+         environment hasn't been initialized yet (e.g. very early boot lines). -->
+    <springProperty scope="context"
+                    name="MODULYTHE_APP_NAME"
+                    source="spring.application.name"
+                    defaultValue="modulythe-app"/>
+
+    <!-- Text appender: keep dev output readable. -->
+    <appender name="MODULYTHE_STDOUT_TEXT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${MODULYTHE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- JSON appender: one JSON object per line, UTF-8, UTC timestamps.
+         The Logstash encoder emits every MDC key (incl. traceId, spanId, userId, ...)
+         as a top-level field, which is exactly what `| json` parsers in LogQL/ELK expect. -->
+    <appender name="MODULYTHE_STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- ISO-8601 UTC. Match Loki's expectation for `time` extraction. -->
+            <timeZone>UTC</timeZone>
+            <!-- Pin the service name so an aggregator can group multi-instance logs.
+                 Stays out of the MDC so the value is constant across log lines. -->
+            <customFields>{"service":"${MODULYTHE_APP_NAME}"}</customFields>
+            <!-- Don't dump entire stack traces inline beyond a sane depth - keeps
+                 single-line JSON readable and avoids Loki line-size limits. -->
+            <shortenedLoggerNameLength>40</shortenedLoggerNameLength>
+            <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                <maxLength>4096</maxLength>
+                <rootCauseFirst>true</rootCauseFirst>
+            </throwableConverter>
+        </encoder>
+    </appender>
+
+</included>
