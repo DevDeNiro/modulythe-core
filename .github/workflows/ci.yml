@@ -2,9 +2,9 @@ name: CI - Security Scan
 
 on:
     push:
-        branches: [ "main" ]
+        branches: [ "main", "develop" ]
     pull_request:
-        branches: [ "main" ]
+        branches: [ "main", "develop" ]
 
 jobs:
     build-and-scan:
@@ -21,15 +21,22 @@ jobs:
                     cache: 'maven'
 
             -   name: Build with Maven
-                run: ./mvnw clean install -DskipTests
+                run: ./mvnw -B -ntp clean install -DskipTests
 
             -   name: OWASP Dependency Check
-                run: ./mvnw org.owasp:dependency-check-maven:aggregate -DfailBuildOnCVSS=7 -Dformat=HTML -Dformat=JUNIT
+                run: >
+                    ./mvnw -B -ntp org.owasp:dependency-check-maven:12.1.0:aggregate
+                    -DfailBuildOnCVSS=7
+                    -Dformats=HTML,JUNIT
+                    -DnvdApiKey=${{ secrets.NVD_API_KEY }}
                 continue-on-error: true
 
-            -   name: Upload Test Results
+            -   name: Upload Dependency-Check Report
                 if: always()
                 uses: actions/upload-artifact@v4
                 with:
                     name: dependency-check-report
-                    path: target/dependency-check-report.html
+                    path: |
+                        target/dependency-check-report.html
+                        target/dependency-check-junit.xml
+                    if-no-files-found: warn

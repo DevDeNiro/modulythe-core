@@ -30,7 +30,7 @@ public abstract class BaseRootAggregate<T extends BaseRootAggregate<T, ID>, ID e
     }
 
     // Maintain a list of domain events for the AR
-    private transient List<BaseDomainEvent<?>> domainEvents = new ArrayList<>();
+    private final transient List<BaseDomainEvent<?>> domainEvents = new ArrayList<>();
 
     /**
      * Adds a domain event to the aggregate's list of events.
