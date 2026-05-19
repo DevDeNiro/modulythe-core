@@ -1,4 +1,4 @@
-name: CI - Security Scan
+name: CI
 
 on:
     push:
@@ -6,8 +6,11 @@ on:
     pull_request:
         branches: [ "main", "develop" ]
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
-    build-and-scan:
+    build:
         runs-on: ubuntu-latest
 
         steps:
@@ -21,22 +24,4 @@ jobs:
                     cache: 'maven'
 
             -   name: Build with Maven
-                run: ./mvnw -B -ntp clean install -DskipTests
-
-            -   name: OWASP Dependency Check
-                run: >
-                    ./mvnw -B -ntp org.owasp:dependency-check-maven:12.1.0:aggregate
-                    -DfailBuildOnCVSS=7
-                    -Dformats=HTML,JUNIT
-                    -DnvdApiKey=${{ secrets.NVD_API_KEY }}
-                continue-on-error: true
-
-            -   name: Upload Dependency-Check Report
-                if: always()
-                uses: actions/upload-artifact@v4
-                with:
-                    name: dependency-check-report
-                    path: |
-                        target/dependency-check-report.html
-                        target/dependency-check-junit.xml
-                    if-no-files-found: warn
+                run: ./mvnw -B -ntp clean install
